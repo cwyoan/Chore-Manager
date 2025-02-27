@@ -8,31 +8,38 @@ async function main() {
 
   // Standard SQL query
   console.log(await server.query("show tables"));
+  //console.log(await server.query("select * from users"));
 
   // Get info of user with UserID = 2
   console.log(await server.getUser(2));
 
+  console.log(await server.getFriends(4));
+
   // Create/Update user
   console.log(
     await server.setUser({
-      UserID: 2,
-      FirstName: "Mary",
-      LastName: "Jane",
-      Email: "m.jane@chores.com",
-      Pass: "poppins!",
-      Score: 0,
-      Friends: "",
-      Age: 30,
+      UserID: 4,
+      FirstName: "Kathy",
+      LastName: "Carty",
+      Email: "kcvictory@chores.com",
+      Pass: "trE_3@s",
+      Score: 500,
+      Age: 22,
     })
   );
 
   // Update user
-  console.log(
+  /*console.log(
     await server.setUser({
       UserID: 1,
       Score: 40,
     })
-  );
+  );*/
+
+  console.log(await server.getFriendsRanked(3));
+  //console.log(await server.acceptFriendRequest(3, 4));
+
+  server.close();
 
   process.exit();
 }
