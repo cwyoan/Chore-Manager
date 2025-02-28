@@ -39,6 +39,15 @@ async function main() {
   console.log(await server.getFriendsRanked(3));
   //console.log(await server.acceptFriendRequest(3, 4));
 
+  console.log(
+    await server.setChore({
+      ChoreID: 1,
+      Name: "Do the Dishes",
+      Difficulty: 1,
+      Timer: 10,
+    })
+  );
+
   server.close();
 
   process.exit();
