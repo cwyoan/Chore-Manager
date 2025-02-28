@@ -228,6 +228,44 @@ class Server {
   }
 
   /**
+   * Attempts to fetch a chore's data.
+   * @param {number} choreID The ID of the chore.
+   * @returns {Dictionary|null} A dictionary of all information pertaining to a chore, or *null* if no chore was found.
+   * @async
+   */
+  async getChore(choreID) {
+    var chore = await this.query("select * from chores where ChoreID = ?", [
+      choreID,
+    ]);
+
+    if (chore.length == 0) return null;
+
+    return chore[0];
+  }
+
+  /**
+   * Attempts to set a chore's data.
+   * @param {Dictionary} params A dictionary of the chore's information.
+   * @returns {boolean} Whether the operation succeeded or failed.
+   * @async
+   */
+  async setChore(params) {
+    if (!("ChoreID" in params)) return false;
+
+    var id = params["ChoreID"];
+
+    if (await this.getChore(id))
+      return (
+        await this.#tryQuery("update chores set ? where ChoreID = ?", [
+          params,
+          id,
+        ])
+      )[0];
+
+    return (await this.#tryQuery("insert into chores set ?", [params]))[0];
+  }
+
+  /**
    * Attempts to send a query.
    * @param {string} sql Query message.
    * @param {list} parameters An optional list of values to fill placeholders.
