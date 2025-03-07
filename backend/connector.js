@@ -297,6 +297,27 @@ class Connector {
       })
     ).data;
   }
+
+  /**
+   * Checks if a username and password match.
+   * @param {string} email An email.
+   * @param {string} password A password.
+   * @returns {boolean} True if the email and password match.
+   * @async
+   */
+  async matchLogin(email, password) {
+    return (
+      await axios.get("http://localhost:8080/api/login", {
+        headers: {
+          server: true,
+        },
+        params: {
+          email: email,
+          password: password,
+        },
+      })
+    ).data;
+  }
 }
 
 export default Connector;

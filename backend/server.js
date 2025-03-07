@@ -23,6 +23,11 @@ app.use("/api/*", (req, res, next) => {
   next();
 });
 
+// Login check
+app.get("/api/login", async (req, res) => {
+  res.send(await db.matchLogin(req.query.email, req.query.password));
+});
+
 app.get("/api/users", async (req, res) => {
   res.send(await db.query("select * from users"));
 });

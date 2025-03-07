@@ -299,6 +299,24 @@ class Database {
   }
 
   /**
+   * Checks if a username and password match.
+   * @param {string} email An email.
+   * @param {string} password A password.
+   * @returns {boolean} True if the email and password match.
+   * @async
+   */
+  async matchLogin(email, password) {
+    return (
+      (
+        await this.query("select * from users where email = ? and pass = ?", [
+          email,
+          password,
+        ])
+      ).length != 0
+    );
+  }
+
+  /**
    * Attempts to send a query.
    * @param {string} sql Query message.
    * @param {list} parameters An optional list of values to fill placeholders.
