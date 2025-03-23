@@ -14,14 +14,16 @@ function SignupForm({ onAuthSuccess, showMessage }) {
     e.preventDefault();
     try {
       // Generate a simple unique ID using the current timestamp.
-      const newUserId = Date.now();
+      const newUserId = Number(
+        BigInt.asUintN(31, BigInt(Date.now()) * 0x8000000080000001n)
+      );
       const newUser = {
         UserID: newUserId,
         email,
         firstName,
         lastName,
         age: parseInt(age, 10),
-        pass: password // Note: In production, be sure to hash passwords!
+        pass: password, // Note: In production, be sure to hash passwords!
       };
 
       const result = await connector.setUser(newUser);
@@ -42,55 +44,57 @@ function SignupForm({ onAuthSuccess, showMessage }) {
       <h2>Signup</h2>
       <div className="form-group">
         <label>Email:</label>
-        <input 
-          type="email" 
-          value={email} 
-          onChange={(e) => setEmail(e.target.value)} 
-          required 
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
           className="form-input"
         />
       </div>
       <div className="form-group">
         <label>First Name:</label>
-        <input 
-          type="text" 
-          value={firstName} 
-          onChange={(e) => setFirstName(e.target.value)} 
-          required 
+        <input
+          type="text"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          required
           className="form-input"
         />
       </div>
       <div className="form-group">
         <label>Last Name:</label>
-        <input 
-          type="text" 
-          value={lastName} 
-          onChange={(e) => setLastName(e.target.value)} 
-          required 
+        <input
+          type="text"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          required
           className="form-input"
         />
       </div>
       <div className="form-group">
         <label>Age:</label>
-        <input 
-          type="number" 
-          value={age} 
-          onChange={(e) => setAge(e.target.value)} 
-          required 
+        <input
+          type="number"
+          value={age}
+          onChange={(e) => setAge(e.target.value)}
+          required
           className="form-input"
         />
       </div>
       <div className="form-group">
         <label>Password:</label>
-        <input 
-          type="password" 
-          value={password} 
-          onChange={(e) => setPassword(e.target.value)} 
-          required 
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
           className="form-input"
         />
       </div>
-      <button type="submit" className="submit-button">Signup</button>
+      <button type="submit" className="submit-button">
+        Signup
+      </button>
     </form>
   );
 }
