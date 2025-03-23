@@ -1,40 +1,55 @@
-import { useState, useEffect } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import React, { useState } from "react";
+import LoginForm from "./components/LoginForm";
+import Dashboard from "./components/Dashboard";
+import SignupForm from "./components/SignupForm";
 import "./App.css";
-import Connector from "../../backend/connector";
 
 function App() {
-  const [count, setCount] = useState(0);
+  // userId is null until the user authenticates or overrides
+  const [userId, setUserId] = useState(null);
+  const [isLogin, setIsLogin] = useState(true);
+  const [message, setMessage] = useState("");
 
-  // Backend connection (must be in async function)
-  //var conn = new Connector();
+  // Called when login/signup is successful.
+  const handleAuthSuccess = (authenticatedUserId) => {
+    setUserId(authenticatedUserId);
+  };
 
-  useEffect(() => {}, []);
+  const toggleForm = () => {
+    setIsLogin(!isLogin);
+    setMessage("");
+  };
+
+  // Override function to bypass authentication.
+  const overrideToDashboard = () => {
+    // For example, using 0 as the guest user id.
+    setUserId(0);
+    setMessage("Override enabled. Using guest account.");
+  };
+
+  // If userId is set, show the Dashboard (home screen).
+  if (userId !== null) {
+    return <Dashboard userId={userId} />;
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
+    <div className="modal">
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+        <h1>Chore App</h1>
+        <button className="toggle-button" onClick={toggleForm}>
+          {isLogin ? "Switch to Signup" : "Switch to Login"}
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+        {isLogin ? (
+          <LoginForm onAuthSuccess={handleAuthSuccess} showMessage={setMessage} />
+        ) : (
+          <SignupForm onAuthSuccess={handleAuthSuccess} showMessage={setMessage} />
+        )}
+        {message && <p className="message">{message}</p>}
+        <button className="override-button" onClick={overrideToDashboard}>
+          Override: Go to Dashboard
+        </button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   );
 }
 
