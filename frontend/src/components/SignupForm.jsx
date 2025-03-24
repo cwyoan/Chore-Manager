@@ -23,13 +23,19 @@ function SignupForm({ onAuthSuccess, showMessage }) {
         firstName,
         lastName,
         age: parseInt(age, 10),
-        pass: password, // Note: In production, be sure to hash passwords!
+        pass: password,
       };
 
       const result = await connector.setUser(newUser);
       if (result && result.message === "Success") {
         showMessage("Signup successful! Redirecting to home...");
-        onAuthSuccess(); // Navigate to the home screen.
+        const users = await connector.getUsers();
+        const createdUser = users.find((u) => u.email === email);
+        if (createdUser) {
+          onAuthSuccess(createdUser.UserID);
+        } else {
+          showMessage("Error: Unable to fetch new user record.");
+        }
       } else {
         showMessage("Signup failed. Please try again.");
       }

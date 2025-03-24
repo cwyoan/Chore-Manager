@@ -10,10 +10,8 @@ function Dashboard({ userId }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        // Fetch the logged-in user’s data (including points)
         const userData = await connector.getUser(userId);
         setUser(userData);
-        // Fetch the list of chores from the backend
         const choresData = await connector.getChores();
         setChores(choresData);
       } catch (error) {

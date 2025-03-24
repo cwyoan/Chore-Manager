@@ -11,9 +11,15 @@ function LoginForm({ onAuthSuccess, showMessage }) {
     e.preventDefault();
     try {
       const result = await connector.matchLogin(email, password);
-      if (result) {
-        showMessage("Login successful!");
-        onAuthSuccess(); // Navigate to the home screen.
+      if (isValid) {
+        const users = await connector.getUsers();
+        const loggedInUser = users.find((u) => u.email === email);
+        if (loggedInUser) {
+          showMessage("Login successful!");
+          onAuthSuccess(loggedInUser.UserID);
+        } else {
+          showMessage("User record not found.");
+        }
       } else {
         showMessage("Invalid email or password.");
       }
