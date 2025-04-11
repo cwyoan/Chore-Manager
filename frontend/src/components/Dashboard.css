@@ -1,65 +1,218 @@
+/* Dashboard.css */
+
 .dashboard-container {
-    padding: 20px;
-    background: #f7f7f7;
-    min-height: 100vh;
-  }
-  
-  .dashboard-header {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .dashboard-header h1 {
-    margin: 0;
-    color: #333;
-  }
-  
-  .dashboard-header p {
-    margin: 10px 0 0;
-    font-size: 1.2rem;
-    color: #666;
-  }
-  
-  .chores-section {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-  
-  .chores-section h2 {
-    margin-top: 0;
-    color: #333;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 10px;
-  }
-  
-  .chores-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .chore-item {
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .chore-item:last-child {
-    border-bottom: none;
-  }
-  
-  .chore-item h3 {
-    margin: 0 0 5px;
-    color: #2196f3;
-  }
-  
-  .chore-item p {
-    margin: 5px 0;
-    color: #555;
-  }
-  
+  width: 100vw;
+  min-height: 100vh;
+  padding: 20px;
+  background: #f0f2f5;
+  margin: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* Header */
+.dashboard-header {
+  width: 100%;
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  color: #333;
+}
+
+.user-points {
+  margin-top: 10px;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+/* Main sections (Points, Leaderboard, Friends) */
+.dashboard-main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 30px;
+  justify-content: space-around;
+}
+
+.section {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  flex: 1 1 300px;
+  min-width: 300px;
+  box-sizing: border-box;
+}
+
+.section h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 5px;
+  color: #333;
+}
+
+.points-value {
+  font-size: 2rem;
+  color: #2196f3;
+  text-align: center;
+}
+
+.leaderboard-list,
+.friends-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.leaderboard-item,
+.friend-item {
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.leaderboard-item:last-child,
+.friend-item:last-child {
+  border-bottom: none;
+}
+
+.rank {
+  font-weight: bold;
+  margin-right: 8px;
+  color: #2196f3;
+}
+
+/* Chores controls and pill-styled items */
+.chores-controls {
+  margin-top: 30px;
+}
+
+.chores-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.chores-header h2 {
+  margin: 0;
+  flex-grow: 1;
+  color: #333;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.pill-button {
+  background: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s;
+}
+
+.pill-button:hover {
+  background: #43a047;
+}
+
+/* Specific styles for confirm add / remove */
+.confirm-add {
+  background: #2196f3;
+}
+
+.confirm-add:hover {
+  background: #1976d2;
+}
+
+.confirm-remove {
+  background: #f44336;
+}
+
+.confirm-remove:hover {
+  background: #e53935;
+}
+
+/* Chores pills container */
+.chores-pills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px 0;
+}
+
+.chore-pill {
+  display: flex;
+  align-items: center;
+  background: #e0f7fa;
+  border-radius: 50px;
+  padding: 8px 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  gap: 8px;
+}
+
+.chore-checkbox {
+  margin-right: 8px;
+}
+
+.chore-title {
+  font-weight: bold;
+  margin-right: 8px;
+  color: #00796b;
+}
+
+.chore-description {
+  margin-right: 8px;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.chore-points {
+  color: #00796b;
+  margin-right: 8px;
+  font-size: 0.9rem;
+}
+
+.finish-button {
+  background: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.3s;
+}
+
+.finish-button:hover {
+  background: #43a047;
+}
+
+/* Chores section container */
+.chores-section {
+  width: 100%;
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin-top: 30px;
+}
+
+.chores-section h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 10px;
+  color: #333;
+}
