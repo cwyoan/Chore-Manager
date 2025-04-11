@@ -28,10 +28,10 @@ function Dashboard({ userId }) {
         const choresData = await connector.getChores();
         setChores(choresData);
 
-        const leaderboardData = await connector.getFriendsRanked(id);
+        const leaderboardData = await connector.getFriendsRanked(userId);
         setLeaderboard(leaderboardData);
 
-        const friendsData = await connector.getFriends(id);
+        const friendsData = await connector.getFriends(userId);
         setFriends(friendsData);
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
@@ -145,15 +145,15 @@ function Dashboard({ userId }) {
   return (
     <div className="dashboard-container">
       <header className="dashboard-header">
-        <h1>Welcome, {user ? user.firstName : "User"}!</h1>
-        {user && <p className="user-points">Points: {user.score || 0}</p>}
+        <h1>Welcome, {user ? user.FirstName : "User"}!</h1>
+        {user && <p className="user-points">Points: {user.Score || 0}</p>}
       </header>
 
       <div className="dashboard-main">
         <div className="section points-section">
           <h2>Your Points</h2>
           {user ? (
-            <p className="points-value">{user.score || 0}</p>
+            <p className="points-value">{user.Score || 0}</p>
           ) : (
             <p>Loading points...</p>
           )}
@@ -165,7 +165,8 @@ function Dashboard({ userId }) {
               {leaderboard.map((entry, index) => (
                 <li key={entry.UserID} className="leaderboard-item">
                   <span className="rank">{index + 1}.</span>
-                  {entry.firstName || entry.firstname} {entry.lastName || entry.lastname} - {entry.score || 0} pts
+                  {entry.FirstName || entry.FirstName}{" "}
+                  {entry.LastName || entry.LastName} - {entry.Score || 0} pts
                 </li>
               ))}
             </ul>
@@ -179,7 +180,8 @@ function Dashboard({ userId }) {
             <ul className="friends-list">
               {friends.map((friend) => (
                 <li key={friend.UserID} className="friend-item">
-                  {friend.firstName || friend.firstname} {friend.lastName || friend.lastname} - {friend.score || 0} pts
+                  {friend.FirstName || friend.FirstName}{" "}
+                  {friend.LastName || friend.LastName} - {friend.Score || 0} pts
                 </li>
               ))}
             </ul>
@@ -194,8 +196,12 @@ function Dashboard({ userId }) {
         <div className="chores-header">
           <h2>Chores</h2>
           <div className="buttons">
-            <button className="pill-button" onClick={handleAddChoreClick}>+</button>
-            <button className="pill-button" onClick={handleRemoveChoreClick}>–</button>
+            <button className="pill-button" onClick={handleAddChoreClick}>
+              +
+            </button>
+            <button className="pill-button" onClick={handleRemoveChoreClick}>
+              –
+            </button>
           </div>
         </div>
         {addingChore && (
@@ -230,11 +236,16 @@ function Dashboard({ userId }) {
                 className="form-input"
               />
             </div>
-            <button type="submit" className="pill-button confirm-add">Confirm Add</button>
+            <button type="submit" className="pill-button confirm-add">
+              Confirm Add
+            </button>
           </form>
         )}
         {removingChores && selectedChores.length > 0 && (
-          <div className="pill-button confirm-remove" onClick={handleConfirmRemove}>
+          <div
+            className="pill-button confirm-remove"
+            onClick={handleConfirmRemove}
+          >
             Confirm Delete
           </div>
         )}
@@ -250,10 +261,17 @@ function Dashboard({ userId }) {
                     className="chore-checkbox"
                   />
                 )}
-                <span className="chore-title">{chore.title || chore.name || "Untitled"}</span>
-                <span className="chore-description">{chore.description}</span>
-                <span className="chore-points">{chore.points} pts</span>
-                <button onClick={() => handleFinishChore(chore)} className="pill-button finish-button">
+                <span className="chore-title">
+                  {chore.Title || chore.Name || "Untitled"}
+                </span>
+                <span className="chore-description">{chore.Description}</span>
+                <span className="chore-points">
+                  {10 * chore.Difficulty} pts
+                </span>
+                <button
+                  onClick={() => handleFinishChore(chore)}
+                  className="pill-button finish-button"
+                >
                   Finished
                 </button>
               </div>

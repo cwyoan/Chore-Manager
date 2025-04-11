@@ -30,7 +30,9 @@ function SignupForm({ onAuthSuccess, showMessage }) {
       if (result && result.message === "Success") {
         showMessage("Signup successful! Redirecting to home...");
         const users = await connector.getUsers();
-        const createdUser = users.find((u) => u.email === email);
+        const createdUser = users.find(
+          (u) => u.Email.toUpperCase() === email.toUpperCase()
+        );
         if (createdUser) {
           onAuthSuccess(createdUser.UserID);
         } else {
