@@ -71,12 +71,16 @@ function Dashboard({ userId }) {
     e.preventDefault();
     try {
       // Generate a unique chore ID (using Date.now() for simplicity)
-      const newChoreId = Date.now();
+      const newChoreId = Number(
+        BigInt.asUintN(31, BigInt(Date.now()) * 0x8000000080000001n)
+      );
       const newChore = {
         ChoreID: newChoreId,
-        title: choreTitle,
-        description: choreDescription,
-        points: parseInt(chorePoints, 10) || 0,
+        Name: choreTitle,
+        Description: choreDescription,
+        Difficulty: parseInt(chorePoints, 10) || 0,
+        // TODO
+        Timer: 5,
       };
 
       const result = await connector.setChore(newChore);
@@ -127,8 +131,8 @@ function Dashboard({ userId }) {
       if (!user) return console.error("User not loaded.");
       // Update user points by adding chore points
       const updatedUser = { ...user };
-      const cp = parseInt(chore.points, 10) || 0;
-      updatedUser.score = (updatedUser.score || 0) + cp;
+      const cp = parseInt(chore.Difficulty, 10) || 0;
+      updatedUser.Score = (updatedUser.Score || 0) + cp;
       const userResult = await connector.setUser(updatedUser);
       if (!(userResult && userResult.message === "Success")) {
         console.error("Failed to update user points.");
@@ -261,13 +265,9 @@ function Dashboard({ userId }) {
                     className="chore-checkbox"
                   />
                 )}
-                <span className="chore-title">
-                  {chore.Title || chore.Name || "Untitled"}
-                </span>
+                <span className="chore-title">{chore.Name || "Untitled"}</span>
                 <span className="chore-description">{chore.Description}</span>
-                <span className="chore-points">
-                  {10 * chore.Difficulty} pts
-                </span>
+                <span className="chore-points">{chore.Difficulty} pts</span>
                 <button
                   onClick={() => handleFinishChore(chore)}
                   className="pill-button finish-button"
