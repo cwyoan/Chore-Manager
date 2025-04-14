@@ -9,29 +9,37 @@ class Logic {
    */
 
   constructor(spriteWidth, spriteHeight, pipeWidth) {
-    this.pos = [0.25, 0.5];
+    this.pos = [0.2, 0.65];
     this.pipes = [];
 
-    // Screen % change per action or second
-    this.jumpHeight = 0.2;
-    this.jumpSpeed = 1;
-    this.grav = 0.1;
+    this.jumpSpeed = 1.2;
+    this.grav = 0.03;
     this.vel = 0;
 
     this.time = Date.now();
     this.count = 5;
     this.offScreen = 0.2;
 
-    this.speed = 0.1;
+    this.speed = 0.15;
     this.score = 0;
 
     this.width = spriteWidth;
     this.height = spriteHeight;
     this.pWidth = pipeWidth;
 
-    for (var i = 1; i <= this.count; i++) {
-      this.pipes.push(this.#MakePipe(0.3, [i * (1.5 + this.offScreen), 0.5]));
+    // Average number of pipes on screen
+    this.pipeDensity = 1.6;
+
+    for (var i = 0; i < this.count; i++) {
+      this.pipes.push(
+        this.#MakePipe(Math.random() * 0.15 + 0.27, [
+          1 + this.offScreen + this.pWidth / 2 + i / this.pipeDensity,
+          Math.random() * 0.6 + 0.2,
+        ])
+      );
     }
+
+    this.lastPipe = this.pipes[this.count - 1];
   }
 
   /** Trigger a game update.
@@ -59,9 +67,15 @@ class Logic {
       pipe.pos[0] -= this.speed * dTime;
 
       if (pipe.pos[0] < -this.offScreen) {
-        pipe.pos[0] = 1 + this.offScreen;
-        pipe.pos[1] = Math.random() * 0.6 + 0.2
+        pipe.pos[0] = Math.max(
+          this.lastPipe.pos[0] + 1 / this.pipeDensity,
+          1 + this.offScreen + this.pWidth / 2
+        );
+        pipe.pos[1] = Math.random() * 0.6 + 0.2;
+        pipe.gap = Math.random() * 0.15 + 0.27;
         pipe.scored = false;
+
+        this.lastPipe = pipe;
       } else {
         if (this.#DidCollide(pipe)) return false;
 
@@ -95,8 +109,8 @@ class Logic {
   }
 
   #DidCollide(pipe) {
-    const[playerX, playerY] = this.pos;
-    const[pipeX, pipeY] = pipe.pos;
+    const [playerX, playerY] = this.pos;
+    const [pipeX, pipeY] = pipe.pos;
 
     const playerTop = playerY + this.height / 2;
     const playerBottom = playerY - this.height / 2;
@@ -108,7 +122,8 @@ class Logic {
     const pipeLeft = pipeX - this.pWidth / 2;
     const pipeRight = pipeX + this.pWidth / 2;
 
-    const horizontalCollision = playerRight > pipeLeft && playerLeft < pipeRight;
+    const horizontalCollision =
+      playerRight > pipeLeft && playerLeft < pipeRight;
     const verticalCollision = playerTop > gapTop || playerBottom < gapBottom;
 
     return horizontalCollision && verticalCollision;
