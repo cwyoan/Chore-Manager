@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Timer from "../../../backend/timer";
 import Connector from "../../../backend/connector";
 import "./Dashboard.css";
 
@@ -17,6 +18,14 @@ function Dashboard({ userId }) {
   const [choreTitle, setChoreTitle] = useState("");
   const [choreDescription, setChoreDescription] = useState("");
   const [chorePoints, setChorePoints] = useState("");
+  const [timer, setTimer] = useState({});
+
+  // For editing chores
+  const [editing, setEditing] = useState(null);
+  const [editTitle, setEditTitle] = useState("");
+  const [editDesc, setEditDesc] = useState("");
+  const [editPoints, setEditPoints] = useState("");
+  const [editTimerMs, setEditTimerMs] = useState("");
 
   useEffect(() => {
     async function fetchDashboardData() {
@@ -33,6 +42,12 @@ function Dashboard({ userId }) {
 
         const friendsData = await connector.getFriends(userId);
         setFriends(friendsData);
+
+        const timerData = {};
+        choresData.forEach((chore) => {
+            timerData[chore.ChoreID] = new Timer(chore.Timer * 60 * 1000);
+        });
+        setTimer(timerData);
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
       }
@@ -59,9 +74,7 @@ function Dashboard({ userId }) {
     }
   }
 
-  // ----------------------------
-  // Add Chore Logic
-  // ----------------------------
+
   const handleAddChoreClick = () => {
     setAddingChore(true);
     setRemovingChores(false);
@@ -126,24 +139,60 @@ function Dashboard({ userId }) {
     }
   };
 
+  const startChore = (chore) => {
+    const durationMs = (chore.Timer /* minutes */) * 60 * 1000;
+    setTimers(ts => ({ ...ts, [chore.ChoreID]: new Timer(durationMs) }));
+  };
+
   const handleFinishChore = async (chore) => {
+    const choreTimer = timers[chore.ChoreID];
+    if (!choreTimer) {
+      alert("Please Start the timer first!");
+      return;
+    }
+
+    if (!timer.IsDone()) {
+        const remMs = timer.TimeRemaining();
+        const remMin = Math.ceil(remMs / (1000 * 60));
+        alert(`Please wait ${remMin} more minute(s) before finishing this chore.`);
+        return;
+      }
+
     try {
-      if (!user) return console.error("User not loaded.");
-      // Update user points by adding chore points
       const updatedUser = { ...user };
-      const cp = parseInt(chore.Difficulty, 10) || 0;
-      updatedUser.Score = (updatedUser.Score || 0) + cp;
+      const pts = parseInt(chore.Difficulty, 10) || 0;
+      updatedUser.Score = (updatedUser.Score || 0) + pts;
       const userResult = await connector.setUser(updatedUser);
       if (!(userResult && userResult.message === "Success")) {
         console.error("Failed to update user points.");
         return;
       }
-      // Delete the chore after finishing it
       await connector.deleteChore(chore.ChoreID);
       await refreshData();
-    } catch (error) {
-      console.error("Error finishing chore:", error);
+    } catch (err) {
+      console.error("Error finishing chore:", err);
     }
+  };
+  
+  const handleEditClick = chore => {
+    setEditing(chore.ChoreID);
+    setEditTitle(chore.Name);
+    setEditDesc(chore.Description);
+    setEditPoints(chore.Difficulty);
+    setEditTimerMs(chore.timer_duration_ms || 0);
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    await connector.setChore({
+        ChoreID: editing,
+        Name: editTitle,
+        Description: editDesc,
+        Difficulty: parseInt(editPoints, 10) || 0,
+        Timer: parseInt(editTimerMs, 10) || 0,
+    });
+    setEditing(null);
+    await refreshData();
   };
 
   return (
@@ -256,7 +305,21 @@ function Dashboard({ userId }) {
         <div className="chores-pills-container">
           {chores && chores.length > 0 ? (
             chores.map((chore) => (
-              <div key={chore.ChoreID} className="chore-pill">
+              <div 
+                key={chore.ChoreID} 
+                className="chore-pill"
+                onClick={() => handleEditClick(chore)}
+              >
+                <button onClick={() => startChore(chore)} className="pill-button">
+                    Start
+                </button>
+                <span className="chore-title">{chore.Name}</span>
+                <button
+                    onClick={() => handleFinishChore(chore)}
+                    className="pill-button finish-button"
+                >
+                    Finish
+                </button>
                 {removingChores && (
                   <input
                     type="checkbox"
@@ -279,6 +342,24 @@ function Dashboard({ userId }) {
           ) : (
             <p>No chores available.</p>
           )}
+        {editing && (
+            <form onSubmit={handleEditSubmit} className="edit-chore-form">
+                <input value={editTitle} onChange={(e) => setEditTitle(e.target.value)} />
+                <input value={editDesc} onChange={(e) => setEditDesc(e.target.value)} />
+                <input
+                    type="number"
+                    value={editPoints}
+                    onChange={(e) => setEditPoints(e.target.value)}
+                />
+                <input
+                    type="number"
+                    value={editTimerMs}
+                    onChange={(e) => setEditTimerMs(e.target.value)}
+                />
+                <button type="submit"> Save Changes</button>
+                <button onClick={() => setEditing(null)}>Cancel</button>
+            </form>
+        )}
         </div>
       </div>
     </div>
