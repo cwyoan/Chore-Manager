@@ -236,3 +236,28 @@
   padding-bottom: 10px;
   color: #333;
 }
+
+
+.tab-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.tab-buttons button {
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: none;
+  background-color: #d3d3d3;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.tab-buttons button:hover {
+  background-color: #bbb;
+}
+
+.tab-content {
+  padding: 20px;
+}
