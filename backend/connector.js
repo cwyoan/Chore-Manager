@@ -64,7 +64,7 @@ class Connector {
    */
   async deleteChore(id) {
     return (
-      await axios.put(
+      await axios.delete(
         "http://localhost:8080/api/chores",
         {},
         {

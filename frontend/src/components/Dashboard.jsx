@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Timer from "../../../backend/timer";
 import Connector from "../../../backend/connector";
+import ProgressBar from "./ProgressBar";
 import "./Dashboard.css";
 
 const connector = new Connector();
@@ -10,6 +11,7 @@ function Dashboard({ userId }) {
   const [chores, setChores] = useState([]);
   const [leaderboard, setLeaderboard] = useState([]);
   const [friends, setFriends] = useState([]);
+  const [inactive, setInactive] = useState(true);
 
   // For chore management
   const [addingChore, setAddingChore] = useState(false);
@@ -18,7 +20,9 @@ function Dashboard({ userId }) {
   const [choreTitle, setChoreTitle] = useState("");
   const [choreDescription, setChoreDescription] = useState("");
   const [chorePoints, setChorePoints] = useState("");
-  const [timer, setTimer] = useState({});
+  const [timer, setTimer] = useState("");
+  const [currentTimer, setCurrentTimer] = useState({});
+  const [currentChore, setCurrentChore] = useState({});
 
   // For editing chores
   const [editing, setEditing] = useState(null);
@@ -43,11 +47,11 @@ function Dashboard({ userId }) {
         const friendsData = await connector.getFriends(userId);
         setFriends(friendsData);
 
-        const timerData = {};
+        /*const timerData = {};
         choresData.forEach((chore) => {
-            timerData[chore.ChoreID] = new Timer(chore.Timer * 60 * 1000);
+          timerData[chore.ChoreID] = new Timer(chore.Timer * 60 * 1000);
         });
-        setTimer(timerData);
+        setTimers(timerData);*/
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
       }
@@ -74,7 +78,6 @@ function Dashboard({ userId }) {
     }
   }
 
-
   const handleAddChoreClick = () => {
     setAddingChore(true);
     setRemovingChores(false);
@@ -92,8 +95,7 @@ function Dashboard({ userId }) {
         Name: choreTitle,
         Description: choreDescription,
         Difficulty: parseInt(chorePoints, 10) || 0,
-        // TODO
-        Timer: 5,
+        Timer: parseInt(timer, 10) || 0,
       };
 
       const result = await connector.setChore(newChore);
@@ -140,56 +142,74 @@ function Dashboard({ userId }) {
   };
 
   const startChore = (chore) => {
-    const durationMs = (chore.Timer /* minutes */) * 60 * 1000;
-    setTimers(ts => ({ ...ts, [chore.ChoreID]: new Timer(durationMs) }));
+    const durationMs = chore.Timer; /* ms */
+
+    var tmr = new Timer(durationMs);
+    setCurrentTimer(tmr);
+    setCurrentChore(chore);
+    setInactive(false);
+  };
+
+  const cancelChore = () => {
+    setInactive(true);
+
+    setCurrentTimer({});
+    setCurrentChore({});
   };
 
   const handleFinishChore = async (chore) => {
-    const choreTimer = timers[chore.ChoreID];
+    const choreTimer = currentTimer;
     if (!choreTimer) {
       alert("Please Start the timer first!");
       return;
     }
 
-    if (!timer.IsDone()) {
-        const remMs = timer.TimeRemaining();
-        const remMin = Math.ceil(remMs / (1000 * 60));
-        alert(`Please wait ${remMin} more minute(s) before finishing this chore.`);
-        return;
-      }
+    if (!choreTimer.IsDone()) {
+      const remMs = choreTimer.TimeRemaining();
+      const remMin = Math.ceil(remMs / (1000 * 60));
+      console.log(choreTimer.TimeRemaining());
+      alert(
+        `Please wait ${remMin} more minute(s) before finishing this chore.`
+      );
+      return;
+    }
 
     try {
       const updatedUser = { ...user };
       const pts = parseInt(chore.Difficulty, 10) || 0;
-      updatedUser.Score = (updatedUser.Score || 0) + pts;
+      updatedUser.Score += pts;
       const userResult = await connector.setUser(updatedUser);
       if (!(userResult && userResult.message === "Success")) {
         console.error("Failed to update user points.");
         return;
       }
-      await connector.deleteChore(chore.ChoreID);
+      setInactive(true);
+      setCurrentTimer({});
+      setCurrentChore({});
+
+      //await connector.deleteChore(chore.ChoreID);
       await refreshData();
     } catch (err) {
       console.error("Error finishing chore:", err);
     }
   };
-  
-  const handleEditClick = chore => {
+
+  const handleEditClick = (chore) => {
     setEditing(chore.ChoreID);
     setEditTitle(chore.Name);
     setEditDesc(chore.Description);
     setEditPoints(chore.Difficulty);
-    setEditTimerMs(chore.timer_duration_ms || 0);
+    setEditTimerMs(chore.Timer || 0);
   };
 
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     await connector.setChore({
-        ChoreID: editing,
-        Name: editTitle,
-        Description: editDesc,
-        Difficulty: parseInt(editPoints, 10) || 0,
-        Timer: parseInt(editTimerMs, 10) || 0,
+      ChoreID: editing,
+      Name: editTitle,
+      Description: editDesc,
+      Difficulty: parseInt(editPoints, 10) || 0,
+      Timer: parseInt(editTimerMs, 10) || 0,
     });
     setEditing(null);
     await refreshData();
@@ -197,169 +217,201 @@ function Dashboard({ userId }) {
 
   return (
     <div className="dashboard-container">
-      <header className="dashboard-header">
-        <h1>Welcome, {user ? user.FirstName : "User"}!</h1>
-        {user && <p className="user-points">Points: {user.Score || 0}</p>}
-      </header>
-
-      <div className="dashboard-main">
-        <div className="section points-section">
-          <h2>Your Points</h2>
-          {user ? (
-            <p className="points-value">{user.Score || 0}</p>
-          ) : (
-            <p>Loading points...</p>
-          )}
-        </div>
-        <div className="section leaderboard-section">
-          <h2>Leaderboard</h2>
-          {leaderboard && leaderboard.length > 0 ? (
-            <ul className="leaderboard-list">
-              {leaderboard.map((entry, index) => (
-                <li key={entry.UserID} className="leaderboard-item">
-                  <span className="rank">{index + 1}.</span>
-                  {entry.FirstName || entry.FirstName}{" "}
-                  {entry.LastName || entry.LastName} - {entry.Score || 0} pts
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No leaderboard data available.</p>
-          )}
-        </div>
-        <div className="section friends-section">
-          <h2>Friends</h2>
-          {friends && friends.length > 0 ? (
-            <ul className="friends-list">
-              {friends.map((friend) => (
-                <li key={friend.UserID} className="friend-item">
-                  {friend.FirstName || friend.FirstName}{" "}
-                  {friend.LastName || friend.LastName} - {friend.Score || 0} pts
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No friends available.</p>
-          )}
-        </div>
-      </div>
-
-      {/* Chores section with add/remove functionality */}
-      <div className="chores-controls">
-        <div className="chores-header">
-          <h2>Chores</h2>
-          <div className="buttons">
-            <button className="pill-button" onClick={handleAddChoreClick}>
-              +
-            </button>
-            <button className="pill-button" onClick={handleRemoveChoreClick}>
-              –
-            </button>
-          </div>
-        </div>
-        {addingChore && (
-          <form onSubmit={handleAddChoreSubmit} className="add-chore-form">
-            <div className="form-group">
-              <label>Title:</label>
-              <input
-                type="text"
-                value={choreTitle}
-                onChange={(e) => setChoreTitle(e.target.value)}
-                required
-                className="form-input"
-              />
-            </div>
-            <div className="form-group">
-              <label>Description:</label>
-              <input
-                type="text"
-                value={choreDescription}
-                onChange={(e) => setChoreDescription(e.target.value)}
-                required
-                className="form-input"
-              />
-            </div>
-            <div className="form-group">
-              <label>Points:</label>
-              <input
-                type="number"
-                value={chorePoints}
-                onChange={(e) => setChorePoints(e.target.value)}
-                required
-                className="form-input"
-              />
-            </div>
-            <button type="submit" className="pill-button confirm-add">
-              Confirm Add
-            </button>
-          </form>
-        )}
-        {removingChores && selectedChores.length > 0 && (
-          <div
-            className="pill-button confirm-remove"
-            onClick={handleConfirmRemove}
+      {!inactive && currentTimer != {} && (
+        <div className="chore-overlay">
+          <ProgressBar timer={currentTimer} />
+          <button
+            onClick={() => cancelChore(currentChore)}
+            className="pill-button"
           >
-            Confirm Delete
+            Cancel
+          </button>
+          <button
+            onClick={() => handleFinishChore(currentChore)}
+            className="pill-button finish-button"
+          >
+            Finish
+          </button>
+        </div>
+      )}
+      <div className="underlay">
+        <header className="dashboard-header">
+          <h1>Welcome, {user ? user.FirstName : "User"}!</h1>
+          {user && <p className="user-points">Points: {user.Score || 0}</p>}
+        </header>
+
+        <div className="dashboard-main">
+          <div className="section points-section">
+            <h2>Your Points</h2>
+            {user ? (
+              <p className="points-value">{user.Score || 0}</p>
+            ) : (
+              <p>Loading points...</p>
+            )}
           </div>
-        )}
-        <div className="chores-pills-container">
-          {chores && chores.length > 0 ? (
-            chores.map((chore) => (
-              <div 
-                key={chore.ChoreID} 
-                className="chore-pill"
-                onClick={() => handleEditClick(chore)}
-              >
-                <button onClick={() => startChore(chore)} className="pill-button">
+          <div className="section leaderboard-section">
+            <h2>Leaderboard</h2>
+            {leaderboard && leaderboard.length > 0 ? (
+              <ul className="leaderboard-list">
+                {leaderboard.map((entry, index) => (
+                  <li key={entry.UserID} className="leaderboard-item">
+                    <span className="rank">{index + 1}.</span>
+                    {entry.FirstName || entry.FirstName}{" "}
+                    {entry.LastName || entry.LastName} - {entry.Score || 0} pts
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No leaderboard data available.</p>
+            )}
+          </div>
+          <div className="section friends-section">
+            <h2>Friends</h2>
+            {friends && friends.length > 0 ? (
+              <ul className="friends-list">
+                {friends.map((friend) => (
+                  <li key={friend.UserID} className="friend-item">
+                    {friend.FirstName || friend.FirstName}{" "}
+                    {friend.LastName || friend.LastName} - {friend.Score || 0}{" "}
+                    pts
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No friends available.</p>
+            )}
+          </div>
+        </div>
+
+        {/* Chores section with add/remove functionality */}
+        <div className="chores-controls">
+          <div className="chores-header">
+            <h2>Chores</h2>
+            <div className="buttons">
+              <button className="pill-button" onClick={handleAddChoreClick}>
+                +
+              </button>
+              <button className="pill-button" onClick={handleRemoveChoreClick}>
+                –
+              </button>
+            </div>
+          </div>
+          {addingChore && (
+            <form onSubmit={handleAddChoreSubmit} className="add-chore-form">
+              <div className="form-group">
+                <label>Title:</label>
+                <input
+                  type="text"
+                  value={choreTitle}
+                  onChange={(e) => setChoreTitle(e.target.value)}
+                  required
+                  className="form-input"
+                />
+              </div>
+              <div className="form-group">
+                <label>Description:</label>
+                <input
+                  type="text"
+                  value={choreDescription}
+                  onChange={(e) => setChoreDescription(e.target.value)}
+                  required
+                  className="form-input"
+                />
+              </div>
+              <div className="form-group">
+                <label>Points:</label>
+                <input
+                  type="number"
+                  value={chorePoints}
+                  onChange={(e) => setChorePoints(e.target.value)}
+                  required
+                  className="form-input"
+                />
+              </div>
+              <div className="form-group">
+                <label>Timer (ms):</label>
+                <input
+                  type="number"
+                  value={timer}
+                  onChange={(e) => setTimer(e.target.value)}
+                  required
+                  className="form-input"
+                />
+              </div>
+              <button type="submit" className="pill-button confirm-add">
+                Confirm Add
+              </button>
+            </form>
+          )}
+          {removingChores && selectedChores.length > 0 && (
+            <div
+              className="pill-button confirm-remove"
+              onClick={handleConfirmRemove}
+            >
+              Confirm Delete
+            </div>
+          )}
+          <div className="chores-pills-container">
+            {chores && chores.length > 0 ? (
+              chores.map((chore) => (
+                <div
+                  key={chore.ChoreID}
+                  className="chore-pill"
+                  onClick={() => handleEditClick(chore)}
+                >
+                  <button
+                    onClick={() => startChore(chore)}
+                    className="pill-button"
+                  >
                     Start
-                </button>
-                <span className="chore-title">{chore.Name}</span>
-                <button
+                  </button>
+                  <span className="chore-title">{chore.Name}</span>
+                  {removingChores && (
+                    <input
+                      type="checkbox"
+                      checked={selectedChores.includes(chore.ChoreID)}
+                      onChange={() => handleChoreCheckboxChange(chore.ChoreID)}
+                      className="chore-checkbox"
+                    />
+                  )}
+                  <span className="chore-description">{chore.Description}</span>
+                  <span className="chore-points">{chore.Difficulty} pts</span>
+                  <button
                     onClick={() => handleFinishChore(chore)}
                     className="pill-button finish-button"
-                >
-                    Finish
-                </button>
-                {removingChores && (
-                  <input
-                    type="checkbox"
-                    checked={selectedChores.includes(chore.ChoreID)}
-                    onChange={() => handleChoreCheckboxChange(chore.ChoreID)}
-                    className="chore-checkbox"
-                  />
-                )}
-                <span className="chore-title">{chore.Name || "Untitled"}</span>
-                <span className="chore-description">{chore.Description}</span>
-                <span className="chore-points">{chore.Difficulty} pts</span>
-                <button
-                  onClick={() => handleFinishChore(chore)}
-                  className="pill-button finish-button"
-                >
-                  Finished
-                </button>
-              </div>
-            ))
-          ) : (
-            <p>No chores available.</p>
-          )}
-        {editing && (
-            <form onSubmit={handleEditSubmit} className="edit-chore-form">
-                <input value={editTitle} onChange={(e) => setEditTitle(e.target.value)} />
-                <input value={editDesc} onChange={(e) => setEditDesc(e.target.value)} />
+                  >
+                    Finished
+                  </button>
+                </div>
+              ))
+            ) : (
+              <p>No chores available.</p>
+            )}
+            {editing && (
+              <form onSubmit={handleEditSubmit} className="edit-chore-form">
                 <input
-                    type="number"
-                    value={editPoints}
-                    onChange={(e) => setEditPoints(e.target.value)}
+                  value={editTitle}
+                  onChange={(e) => setEditTitle(e.target.value)}
                 />
                 <input
-                    type="number"
-                    value={editTimerMs}
-                    onChange={(e) => setEditTimerMs(e.target.value)}
+                  value={editDesc}
+                  onChange={(e) => setEditDesc(e.target.value)}
+                />
+                <input
+                  type="number"
+                  value={editPoints}
+                  onChange={(e) => setEditPoints(e.target.value)}
+                />
+                <input
+                  type="number"
+                  value={editTimerMs}
+                  onChange={(e) => setEditTimerMs(e.target.value)}
                 />
                 <button type="submit"> Save Changes</button>
                 <button onClick={() => setEditing(null)}>Cancel</button>
-            </form>
-        )}
+              </form>
+            )}
+          </div>
         </div>
       </div>
     </div>

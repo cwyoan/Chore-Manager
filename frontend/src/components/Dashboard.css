@@ -10,13 +10,33 @@
   overflow-x: hidden;
 }
 
+/* Chore Overlay */
+.chore-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+}
+
+.underlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
 /* Header */
 .dashboard-header {
   width: 100%;
   background: #fff;
   padding: 20px 30px;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
   margin-bottom: 20px;
 }
@@ -46,7 +66,7 @@
   background: #fff;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   flex: 1 1 300px;
   min-width: 300px;
   box-sizing: border-box;
@@ -158,7 +178,7 @@
   background: #e0f7fa;
   border-radius: 50px;
   padding: 8px 16px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   gap: 8px;
 }
 
@@ -205,7 +225,7 @@
   background: #fff;
   padding: 20px 30px;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-top: 30px;
 }
 
