@@ -26,20 +26,29 @@ function SignupForm({ onAuthSuccess, showMessage }) {
         pass: password,
       };
 
+      const users = await connector.getUsers();
+
+      if (users.find((u) => u.Email.toUpperCase() === email.toUpperCase())) {
+        showMessage("This email is already taken!");
+        return;
+      }
+
       const result = await connector.setUser(newUser);
-      if (result && result.message === "Success") {
-        showMessage("Signup successful! Redirecting to home...");
-        const users = await connector.getUsers();
-        const createdUser = users.find(
-          (u) => u.Email.toUpperCase() === email.toUpperCase()
-        );
-        if (createdUser) {
-          onAuthSuccess(createdUser.UserID);
-        } else {
-          showMessage("Error: Unable to fetch new user record.");
-        }
-      } else {
+
+      if (!(result && result.message === "Success")) {
         showMessage("Signup failed. Please try again.");
+        return;
+      }
+
+      showMessage("Signup successful! Redirecting to home...");
+      const createdUser = users.find(
+        (u) => u.Email.toUpperCase() === email.toUpperCase()
+      );
+
+      if (createdUser) {
+        onAuthSuccess(createdUser.UserID);
+      } else {
+        showMessage("Error: Unable to fetch new user record.");
       }
     } catch (error) {
       console.error("Signup error:", error);
