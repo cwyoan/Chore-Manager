@@ -85,20 +85,25 @@ function ChoresTab({ user, chores, refreshData, updateUser }) {
 
   const handleFinishChore = async () => {
     if (!currentTimer?.IsDone()) {
-      const remMin = Math.ceil(currentTimer.TimeRemaining() / (1000 * 60));
-      alert(`Please wait ${remMin} more minute(s).`);
+      alert(`Please wait until time is up!`);
       return;
     }
+    const updatedUser = { ...user,
+      Score: (user.Score || 0) + (currentChore.Difficulty || 0),
+    };
 
-    const updatedUser = { ...user };
-    updatedUser.Score = (updatedUser.Score || 0) + (currentChore.Difficulty || 0);
-    const result = await connector.setUser(updatedUser);
+    updateUser(updatedUser);
+    cancelChore();
+    try {
+      const result = await connector.setUser(updatedUser);
+      if (result?.message !== "Success") {
+        alert("Failed to update user score.");
+      }
 
-    if (result?.message === "Success") {
-      updateUser(updatedUser);
-      await connector.deleteChore(currentChore.ChoreID);
-      cancelChore();
-      refreshData();
+      await refreshData();
+    } catch (err) {
+      console.error("Error finishing chore:", err);
+      alert("Something went wrong while finishing the chore.");
     }
   };
 
@@ -127,9 +132,14 @@ function ChoresTab({ user, chores, refreshData, updateUser }) {
     <div className="chores-tab">
       {currentTimer && currentChore && (
         <div className="chore-overlay">
-          <ProgressBar timer={currentTimer} />
-          <button onClick={cancelChore} className="pill-button">Cancel</button>
-          <button onClick={handleFinishChore} className="pill-button finish-button">Finish</button>
+          <div className="overlay-content">
+            <h2 className="chore-title-overlay">{currentChore.Name}</h2>
+            <ProgressBar timer={currentTimer} />
+            <div className="button-row">
+              <button onClick={cancelChore} className="pill-button">Cancel</button>
+              <button onClick={handleFinishChore} className="pill-button">Finish</button>
+            </div>
+          </div>
         </div>
       )}
 

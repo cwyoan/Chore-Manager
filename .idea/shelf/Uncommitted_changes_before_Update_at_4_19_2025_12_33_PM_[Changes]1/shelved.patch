@@ -1,0 +1,40 @@
+Index: frontend/src/components/Dashboard.css
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>/* Dashboard.css */\r\n\r\n.dashboard-container {\r\n  width: 100vw;\r\n  min-height: 100vh;\r\n  padding: 20px;\r\n  background: #f0f2f5;\r\n  margin: 0;\r\n  box-sizing: border-box;\r\n  overflow-x: hidden;\r\n}\r\n\r\n/* Chore Overlay */\r\n.chore-overlay {\r\n  position: fixed;\r\n  top: 0;\r\n  left: 0;\r\n  width: 100%;\r\n  height: 100%;\r\n  background-color: rgba(0, 0, 0, 0.7);\r\n  z-index: 9999;\r\n}\r\n\r\n.underlay {\r\n  position: fixed;\r\n  top: 0;\r\n  left: 0;\r\n  width: 100%;\r\n  height: 100%;\r\n  z-index: 0;\r\n}\r\n\r\n/* Header */\r\n.dashboard-header {\r\n  width: 100%;\r\n  background: #fff;\r\n  padding: 20px 30px;\r\n  border-radius: 8px;\r\n  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);\r\n  text-align: center;\r\n  margin-bottom: 20px;\r\n}\r\n\r\n.dashboard-header h1 {\r\n  margin: 0;\r\n  font-size: 2.5rem;\r\n  color: #333;\r\n}\r\n\r\n.user-points {\r\n  margin-top: 10px;\r\n  font-size: 1.2rem;\r\n  color: #666;\r\n}\r\n\r\n/* Main sections (Points, Leaderboard, Friends) */\r\n.dashboard-main {\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  gap: 20px;\r\n  margin-bottom: 30px;\r\n  justify-content: space-around;\r\n}\r\n\r\n.section {\r\n  background: #fff;\r\n  padding: 20px;\r\n  border-radius: 8px;\r\n  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);\r\n  flex: 1 1 300px;\r\n  min-width: 300px;\r\n  box-sizing: border-box;\r\n}\r\n\r\n.section h2 {\r\n  margin-top: 0;\r\n  margin-bottom: 15px;\r\n  border-bottom: 2px solid #ddd;\r\n  padding-bottom: 5px;\r\n  color: #333;\r\n}\r\n\r\n.points-value {\r\n  font-size: 2rem;\r\n  color: #2196f3;\r\n  text-align: center;\r\n}\r\n\r\n.leaderboard-list,\r\n.friends-list {\r\n  list-style: none;\r\n  margin: 0;\r\n  padding: 0;\r\n}\r\n\r\n.leaderboard-item,\r\n.friend-item {\r\n  padding: 10px 0;\r\n  border-bottom: 1px solid #eee;\r\n}\r\n\r\n.leaderboard-item:last-child,\r\n.friend-item:last-child {\r\n  border-bottom: none;\r\n}\r\n\r\n.rank {\r\n  font-weight: bold;\r\n  margin-right: 8px;\r\n  color: #2196f3;\r\n}\r\n\r\n/* Chores controls and pill-styled items */\r\n.chores-controls {\r\n  margin-top: 30px;\r\n}\r\n\r\n.chores-header {\r\n  display: flex;\r\n  align-items: center;\r\n  margin-bottom: 10px;\r\n}\r\n\r\n.chores-header h2 {\r\n  margin: 0;\r\n  flex-grow: 1;\r\n  color: #333;\r\n}\r\n\r\n.buttons {\r\n  display: flex;\r\n  gap: 10px;\r\n}\r\n\r\n.pill-button {\r\n  background: #4caf50;\r\n  color: #fff;\r\n  border: none;\r\n  padding: 8px 16px;\r\n  border-radius: 50px;\r\n  cursor: pointer;\r\n  font-size: 1rem;\r\n  transition: background 0.3s;\r\n}\r\n\r\n.pill-button:hover {\r\n  background: #43a047;\r\n}\r\n\r\n/* Specific styles for confirm add / remove */\r\n.confirm-add {\r\n  background: #2196f3;\r\n}\r\n\r\n.confirm-add:hover {\r\n  background: #1976d2;\r\n}\r\n\r\n.confirm-remove {\r\n  background: #f44336;\r\n}\r\n\r\n.confirm-remove:hover {\r\n  background: #e53935;\r\n}\r\n\r\n/* Chores pills container */\r\n.chores-pills-container {\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  gap: 10px;\r\n  padding: 10px 0;\r\n}\r\n\r\n.chore-pill {\r\n  display: flex;\r\n  align-items: center;\r\n  background: #e0f7fa;\r\n  border-radius: 50px;\r\n  padding: 8px 16px;\r\n  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);\r\n  gap: 8px;\r\n}\r\n\r\n.chore-checkbox {\r\n  margin-right: 8px;\r\n}\r\n\r\n.chore-title {\r\n  font-weight: bold;\r\n  margin-right: 8px;\r\n  color: #00796b;\r\n}\r\n\r\n.chore-description {\r\n  margin-right: 8px;\r\n  color: #555;\r\n  font-size: 0.9rem;\r\n}\r\n\r\n.chore-points {\r\n  color: #00796b;\r\n  margin-right: 8px;\r\n  font-size: 0.9rem;\r\n}\r\n\r\n.finish-button {\r\n  background: #4caf50;\r\n  color: #fff;\r\n  border: none;\r\n  padding: 4px 8px;\r\n  border-radius: 20px;\r\n  cursor: pointer;\r\n  font-size: 0.9rem;\r\n  transition: background 0.3s;\r\n}\r\n\r\n.finish-button:hover {\r\n  background: #43a047;\r\n}\r\n\r\n/* Chores section container */\r\n.chores-section {\r\n  width: 100%;\r\n  background: #fff;\r\n  padding: 20px 30px;\r\n  border-radius: 8px;\r\n  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);\r\n  margin-top: 30px;\r\n}\r\n\r\n.chores-section h2 {\r\n  margin-top: 0;\r\n  margin-bottom: 15px;\r\n  border-bottom: 2px solid #ddd;\r\n  padding-bottom: 10px;\r\n  color: #333;\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/frontend/src/components/Dashboard.css b/frontend/src/components/Dashboard.css
+--- a/frontend/src/components/Dashboard.css	(revision 7638a6e9567d77b45afdedca375dcb91c744f673)
++++ b/frontend/src/components/Dashboard.css	(date 1744995214131)
+@@ -17,8 +17,27 @@
+   left: 0;
+   width: 100%;
+   height: 100%;
+-  background-color: rgba(0, 0, 0, 0.7);
+-  z-index: 9999;
++  background: rgba(0, 0, 0, 0.75);
++  z-index: 1000;
++
++  display: flex;
++  flex-direction: column;
++  justify-content: center;
++  align-items: center;
++  gap: 1rem;
++}
++
++.overlay-content {
++  display: flex;
++  flex-direction: column;
++  align-items: center;
++  gap: 1.5rem;
++}
++
++.button-row {
++  display: flex;
++  justify-content: center;
++  gap: 1.5rem;
+ }
+ 
+ .underlay {
