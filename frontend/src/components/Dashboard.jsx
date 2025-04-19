@@ -8,11 +8,11 @@ import "./Dashboard.css";
 const connector = new Connector();
 
 function Dashboard({ userId }) {
-    const [user, setUser] = useState(null);
-    const [chores, setChores] = useState([]);
-    const [leaderboard, setLeaderboard] = useState([]);
-    const [friends, setFriends] = useState([]);
-    const [activeTab, setActiveTab] = useState("chores");
+  const [user, setUser] = useState(null);
+  const [chores, setChores] = useState([]);
+  const [leaderboard, setLeaderboard] = useState([]);
+  const [friends, setFriends] = useState([]);
+  const [activeTab, setActiveTab] = useState("chores");
 
   useEffect(() => {
     async function fetchDashboardData() {
@@ -69,7 +69,9 @@ function Dashboard({ userId }) {
             }}
           />
         )}
-        {activeTab === "leaderboard" && <LeaderboardTab leaderboard={leaderboard} />}
+        {activeTab === "leaderboard" && (
+          <LeaderboardTab leaderboard={leaderboard} activeUser={userId} />
+        )}
         {activeTab === "friends" && <FriendsTab friends={friends} />}
       </div>
     </div>

@@ -134,8 +134,22 @@
 
 .leaderboard-item,
 .friend-item {
-  padding: 10px 0;
+  padding: 7px;
+  margin: 3px;
   border-bottom: 1px solid #eee;
+  border-radius: 10px;
+}
+
+.leaderboard-item.first-place {
+  background-color: #fff09a;
+}
+
+.leaderboard-item.second-place {
+  background-color: #deecea;
+}
+
+.leaderboard-item.third-place {
+  background-color: #bdab6c;
 }
 
 .leaderboard-item:last-child,
@@ -147,6 +161,26 @@
   font-weight: bold;
   margin-right: 8px;
   color: #2196f3;
+}
+
+.rank.first-place {
+  color: #ffda0c;
+  text-shadow: 1px 1px 2px #000;
+}
+
+.rank.second-place {
+  color: #f0f0f0;
+  text-shadow: 1px 1px 2px #000;
+}
+
+.rank.third-place {
+  color: #9b7200;
+  text-shadow: 1px 1px 2px #000;
+}
+
+.self-leaderboard {
+  font-weight: bold;
+  color: #00b73f;
 }
 
 /* Chores controls and pill-styled items */
@@ -275,7 +309,6 @@
   padding-bottom: 10px;
   color: #333;
 }
-
 
 .tab-buttons {
   display: flex;
