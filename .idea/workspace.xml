@@ -19,10 +19,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6e659f33-3e15-4a65-9be6-8a694e5cae4a" name="Changes" comment="Made frontend for game (still a work in progress, needs button to return to dashboard and connection with point tracking)">
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/ChoresTab.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ChoresTab.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Dashboard.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Dashboard.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/ProgressBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ProgressBar.jsx" afterDir="false" />
+    <list default="true" id="6e659f33-3e15-4a65-9be6-8a694e5cae4a" name="Changes" comment="Add backend logic file to main branch">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,8 +33,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JavaScript File" />
         <option value="CSS File" />
+        <option value="JavaScript File" />
+        <option value="JSX File" />
       </list>
     </option>
   </component>
@@ -163,7 +162,8 @@
     <MESSAGE value="Organized/fixed game logic to test with frontend (might still be a work in progress)" />
     <MESSAGE value="Extra changes" />
     <MESSAGE value="Made frontend for game (still a work in progress, needs button to return to dashboard and connection with point tracking)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Made frontend for game (still a work in progress, needs button to return to dashboard and connection with point tracking)" />
+    <MESSAGE value="Add backend logic file to main branch" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add backend logic file to main branch" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
