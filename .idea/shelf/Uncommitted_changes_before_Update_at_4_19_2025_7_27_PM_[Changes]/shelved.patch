@@ -1,0 +1,57 @@
+Index: frontend/src/components/Dashboard.jsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import React, { useState, useEffect } from \"react\";\r\nimport Connector from \"../../../backend/connector\";\r\nimport ChoresTab from \"./ChoresTab\";\r\nimport LeaderboardTab from \"./LeaderboardTab\";\r\nimport FriendsTab from \"./FriendsTab\";\r\nimport \"./Dashboard.css\";\r\n\r\nconst connector = new Connector();\r\n\r\nfunction Dashboard({ userId }) {\r\n    const [user, setUser] = useState(null);\r\n    const [chores, setChores] = useState([]);\r\n    const [leaderboard, setLeaderboard] = useState([]);\r\n    const [friends, setFriends] = useState([]);\r\n    const [activeTab, setActiveTab] = useState(\"chores\");\r\n\r\n  useEffect(() => {\r\n    async function fetchDashboardData() {\r\n      try {\r\n        // Fetch the logged-in user’s data (including points)\r\n        const userData = await connector.getUser(userId);\r\n        setUser(userData);\r\n        // Fetch the list of chores from the backend\r\n        const choresData = await connector.getChores();\r\n        setChores(choresData);\r\n\r\n        const leaderboardData = await connector.getFriendsRanked(userId);\r\n        setLeaderboard(leaderboardData);\r\n\r\n        const friendsData = await connector.getFriends(userId);\r\n        setFriends(friendsData);\r\n\r\n        /*const timerData = {};\r\n        choresData.forEach((chore) => {\r\n          timerData[chore.ChoreID] = new Timer(chore.Timer * 60 * 1000);\r\n        });\r\n        setTimers(timerData);*/\r\n      } catch (error) {\r\n        console.error(\"Error fetching dashboard data:\", error);\r\n      }\r\n    }\r\n    if (userId) {\r\n      fetchDashboardData();\r\n    }\r\n  }, [userId]);\r\n\r\n  return (\r\n    <div className=\"dashboard-container\">\r\n      <header className=\"dashboard-header\">\r\n        <h1>Welcome, {user?.FirstName || \"User\"}!</h1>\r\n        <p className=\"user-points\">Points: {user?.Score || 0}</p>\r\n      </header>\r\n\r\n      <div className=\"tab-buttons\">\r\n        <button onClick={() => setActiveTab(\"chores\")}>Chores</button>\r\n        <button onClick={() => setActiveTab(\"leaderboard\")}>Leaderboard</button>\r\n        <button onClick={() => setActiveTab(\"friends\")}>Friends</button>\r\n      </div>\r\n\r\n      <div className=\"tab-content\">\r\n        {activeTab === \"chores\" && (\r\n          <ChoresTab\r\n            user={user}\r\n            chores={chores}\r\n            refreshData={() => connector.getChores().then(setChores)}\r\n            updateUser={(updated) => {\r\n              connector.setUser(updated);\r\n              setUser(updated);\r\n            }}\r\n          />\r\n        )}\r\n        {activeTab === \"leaderboard\" && <LeaderboardTab leaderboard={leaderboard} />}\r\n        {activeTab === \"friends\" && <FriendsTab friends={friends} />}\r\n      </div>\r\n    </div>\r\n  );\r\n}\r\n\r\nexport default Dashboard;\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/frontend/src/components/Dashboard.jsx b/frontend/src/components/Dashboard.jsx
+--- a/frontend/src/components/Dashboard.jsx	(revision eca2010141e91927e7c5fb18a171e68cecaab828)
++++ b/frontend/src/components/Dashboard.jsx	(date 1745098663162)
+@@ -3,6 +3,7 @@
+ import ChoresTab from "./ChoresTab";
+ import LeaderboardTab from "./LeaderboardTab";
+ import FriendsTab from "./FriendsTab";
++import GamePlay from "./GamePlay.jsx";
+ import "./Dashboard.css";
+ 
+ const connector = new Connector();
+@@ -13,6 +14,7 @@
+     const [leaderboard, setLeaderboard] = useState([]);
+     const [friends, setFriends] = useState([]);
+     const [activeTab, setActiveTab] = useState("chores");
++    const [showGame, setShowGame] = useState(false);
+ 
+   useEffect(() => {
+     async function fetchDashboardData() {
+@@ -45,10 +47,14 @@
+   }, [userId]);
+ 
+   return (
++
+     <div className="dashboard-container">
+       <header className="dashboard-header">
+         <h1>Welcome, {user?.FirstName || "User"}!</h1>
+         <p className="user-points">Points: {user?.Score || 0}</p>
++          <div className="header-right">
++              <button onClick={() => setShowGame(true)} className="play-game-button">Play Game</button>
++          </div>
+       </header>
+ 
+       <div className="tab-buttons">
+@@ -71,7 +77,15 @@
+         )}
+         {activeTab === "leaderboard" && <LeaderboardTab leaderboard={leaderboard} />}
+         {activeTab === "friends" && <FriendsTab friends={friends} />}
++        {activeTab === "game" && <GamePlay />}
+       </div>
++        {showGame && (
++            <div className="chore-overlay">
++                <div className="overlay-content">
++                    <GamePlay onExit={() => setShowGame(false)}/>
++                </div>
++            </div>
++        )}
+     </div>
+   );
+ }

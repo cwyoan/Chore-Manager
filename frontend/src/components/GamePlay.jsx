@@ -1,19 +1,22 @@
 import React, { useRef, useEffect, useState } from "react";
 import Logic from "../../../backend/games/flappy/Logic";
 
-const Game = () => {
+const GamePlay = ({onExit}) => {
     const canvasRef = useRef(null);
     const logicRef = useRef(null);
     const flapRef = useRef(false);
 
     const [score, setScore] = useState(0);
     const [isRunning, setIsRunning] = useState(true);
+    const [hasStarted, setHasStarted] = useState(false);
 
     const spriteWidth = 0.05;
     const spriteHeight = 0.1;
     const pipeWidth = 0.1;
 
     useEffect(() => {
+        if (!hasStarted) return;
+
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
 
@@ -83,12 +86,37 @@ const Game = () => {
             window.removeEventListener("keydown", flapHandler);
             window.removeEventListener("mousedown", flapHandler);
         };
-    }, []);
+    }, [hasStarted]);
 
     return (
-        <>
-            <canvas ref={canvasRef} style={{ display: "block" }} />
-            {!isRunning && (
+        <div
+            style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                backgroundColor: "#3ac9ff",
+                zIndex: 999,
+            }}
+        >
+            {!hasStarted && (
+                <div style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    textAlign: "center",
+                    zIndex: 1000,
+                    color: "white"
+                }}>
+                    <h1>Flappy</h1>
+                    <button onClick={() => setHasStarted(true)} className="play-game-button">Start Game</button>
+                </div>
+            )}
+
+            {hasStarted && <canvas ref={canvasRef} style={{ display: "block" }} />}
+            {!isRunning && hasStarted && (
                 <div style={{
                     position: "absolute",
                     top: "50%",
@@ -102,10 +130,11 @@ const Game = () => {
                 }}>
                     <h1>Game Over</h1>
                     <p>Score: {score}</p>
+                    <button onClick={() => onExit(score)} className="play-game-button">Exit to Dashboard</button>
                 </div>
             )}
-        </>
+        </div>
     );
 };
 
-export default Game;
+export default GamePlay;
