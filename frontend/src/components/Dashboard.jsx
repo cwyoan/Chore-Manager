@@ -12,7 +12,6 @@ function Dashboard({ userId }) {
   const [user, setUser] = useState(null);
   const [chores, setChores] = useState([]);
   const [leaderboard, setLeaderboard] = useState([]);
-  const [friends, setFriends] = useState([]);
   const [activeTab, setActiveTab] = useState("chores");
   const [showGame, setShowGame] = useState(false);
 
@@ -51,9 +50,6 @@ function Dashboard({ userId }) {
 
         const leaderboardData = await connector.getFriendsRanked(userId);
         setLeaderboard(leaderboardData);
-
-        const friendsData = await connector.getFriends(userId);
-        setFriends(friendsData);
 
         /*const timerData = {};
         choresData.forEach((chore) => {
@@ -154,7 +150,7 @@ function Dashboard({ userId }) {
         {activeTab === "leaderboard" && (
           <LeaderboardTab leaderboard={leaderboard} activeUser={userId} />
         )}
-        {activeTab === "friends" && <FriendsTab friends={friends} />}
+        {activeTab === "friends" && <FriendsTab userId={userId} />}
       </div>
       {showGame && (
           <div className="chore-overlay">

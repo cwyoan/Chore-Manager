@@ -1,0 +1,59 @@
+.friends-tab {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex: 1 1 300px;
+    min-width: 300px;
+    box-sizing: border-box;
+}
+  
+.friends-list {
+    list-style: none;
+    padding-left: 0;
+}
+  
+.friend-item {
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+  
+.pill-button.remove {
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: none;
+    background-color: #f44336;
+    color: white;
+    cursor: pointer;
+}
+  
+.search-results {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 10px;
+}
+  
+.search-results li {
+    padding: 6px 10px;
+    margin-bottom: 5px;
+    background-color: #f2f2f2;
+    border-radius: 6px;
+}
+
+.status-label {
+    margin-left: 10px;
+    color: #999;
+    font-style: italic;
+}
+
+.status-label {
+    margin-left: 10px;
+    color: #999;
+    font-style: italic;
+}
+  
+.pending-list li {
+    margin-bottom: 10px;
+}
