@@ -41,12 +41,9 @@ function SignupForm({ onAuthSuccess, showMessage }) {
       }
 
       showMessage("Signup successful! Redirecting to home...");
-      const createdUser = users.find(
-        (u) => u.Email.toUpperCase() === email.toUpperCase()
-      );
 
-      if (createdUser) {
-        onAuthSuccess(createdUser.UserID);
+      if ((await connector.getUser(newUserId)) != null) {
+        onAuthSuccess(newUserId);
       } else {
         showMessage("Error: Unable to fetch new user record.");
       }
