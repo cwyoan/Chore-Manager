@@ -60,7 +60,9 @@ function ChoresTab({ user, chores, refreshData, updateUser }) {
 
   const handleChoreCheckboxChange = (choreId) => {
     setSelectedChores((prev) =>
-      prev.includes(choreId) ? prev.filter((id) => id !== choreId) : [...prev, choreId]
+      prev.includes(choreId)
+        ? prev.filter((id) => id !== choreId)
+        : [...prev, choreId]
     );
   };
 
@@ -88,7 +90,8 @@ function ChoresTab({ user, chores, refreshData, updateUser }) {
       alert(`Please wait until time is up!`);
       return;
     }
-    const updatedUser = { ...user,
+    const updatedUser = {
+      ...user,
       Score: (user.Score || 0) + (currentChore.Difficulty || 0),
     };
 
@@ -136,8 +139,12 @@ function ChoresTab({ user, chores, refreshData, updateUser }) {
             <h2 className="chore-title-overlay">{currentChore.Name}</h2>
             <ProgressBar timer={currentTimer} />
             <div className="button-row">
-              <button onClick={cancelChore} className="pill-button">Cancel</button>
-              <button onClick={handleFinishChore} className="pill-button">Finish</button>
+              <button onClick={cancelChore} className="pill-button">
+                Cancel
+              </button>
+              <button onClick={handleFinishChore} className="pill-button">
+                Finish
+              </button>
             </div>
           </div>
         </div>
@@ -146,24 +153,57 @@ function ChoresTab({ user, chores, refreshData, updateUser }) {
       <div className="chores-controls">
         <div className="chores-header">
           <h2>Chores</h2>
-          <div className="buttons">
-            <button className="pill-button" onClick={handleAddChoreClick}>+</button>
-            <button className="pill-button" onClick={handleRemoveChoreClick}>–</button>
-          </div>
+          {user && user.UserID == 1 && (
+            <div className="buttons">
+              <button className="pill-button" onClick={handleAddChoreClick}>
+                +
+              </button>
+              <button className="pill-button" onClick={handleRemoveChoreClick}>
+                –
+              </button>
+            </div>
+          )}
         </div>
 
         {addingChore && (
           <form onSubmit={handleAddChoreSubmit} className="add-chore-form">
-            <input value={choreTitle} onChange={(e) => setChoreTitle(e.target.value)} placeholder="Title" required />
-            <input value={choreDescription} onChange={(e) => setChoreDescription(e.target.value)} placeholder="Description" required />
-            <input type="number" value={chorePoints} onChange={(e) => setChorePoints(e.target.value)} placeholder="Points" required />
-            <input type="number" value={timer} onChange={(e) => setTimer(e.target.value)} placeholder="Timer (ms)" required />
-            <button type="submit" className="pill-button confirm-add">Confirm Add</button>
+            <input
+              value={choreTitle}
+              onChange={(e) => setChoreTitle(e.target.value)}
+              placeholder="Title"
+              required
+            />
+            <input
+              value={choreDescription}
+              onChange={(e) => setChoreDescription(e.target.value)}
+              placeholder="Description"
+              required
+            />
+            <input
+              type="number"
+              value={chorePoints}
+              onChange={(e) => setChorePoints(e.target.value)}
+              placeholder="Points"
+              required
+            />
+            <input
+              type="number"
+              value={timer}
+              onChange={(e) => setTimer(e.target.value)}
+              placeholder="Timer (ms)"
+              required
+            />
+            <button type="submit" className="pill-button confirm-add">
+              Confirm Add
+            </button>
           </form>
         )}
 
         {removingChores && selectedChores.length > 0 && (
-          <button className="pill-button confirm-remove" onClick={handleConfirmRemove}>
+          <button
+            className="pill-button confirm-remove"
+            onClick={handleConfirmRemove}
+          >
             Confirm Delete
           </button>
         )}
@@ -172,7 +212,12 @@ function ChoresTab({ user, chores, refreshData, updateUser }) {
           {chores.length > 0 ? (
             chores.map((chore) => (
               <div key={chore.ChoreID} className="chore-pill">
-                <button onClick={() => startChore(chore)} className="pill-button">Start</button>
+                <button
+                  onClick={() => startChore(chore)}
+                  className="pill-button"
+                >
+                  Start
+                </button>
                 <span className="chore-title">{chore.Name}</span>
                 {removingChores && (
                   <input
@@ -184,7 +229,14 @@ function ChoresTab({ user, chores, refreshData, updateUser }) {
                 )}
                 <span className="chore-description">{chore.Description}</span>
                 <span className="chore-points">{chore.Difficulty} pts</span>
-                <button onClick={() => handleEditClick(chore)} className="pill-button">Edit</button>
+                {user && user.UserID == 1 && (
+                  <button
+                    onClick={() => handleEditClick(chore)}
+                    className="pill-button"
+                  >
+                    Edit
+                  </button>
+                )}
               </div>
             ))
           ) : (
@@ -194,10 +246,24 @@ function ChoresTab({ user, chores, refreshData, updateUser }) {
 
         {editing && (
           <form onSubmit={handleEditSubmit} className="edit-chore-form">
-            <input value={editTitle} onChange={(e) => setEditTitle(e.target.value)} />
-            <input value={editDesc} onChange={(e) => setEditDesc(e.target.value)} />
-            <input type="number" value={editPoints} onChange={(e) => setEditPoints(e.target.value)} />
-            <input type="number" value={editTimerMs} onChange={(e) => setEditTimerMs(e.target.value)} />
+            <input
+              value={editTitle}
+              onChange={(e) => setEditTitle(e.target.value)}
+            />
+            <input
+              value={editDesc}
+              onChange={(e) => setEditDesc(e.target.value)}
+            />
+            <input
+              type="number"
+              value={editPoints}
+              onChange={(e) => setEditPoints(e.target.value)}
+            />
+            <input
+              type="number"
+              value={editTimerMs}
+              onChange={(e) => setEditTimerMs(e.target.value)}
+            />
             <button type="submit">Save Changes</button>
             <button onClick={() => setEditing(null)}>Cancel</button>
           </form>
