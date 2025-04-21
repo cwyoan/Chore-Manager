@@ -62,6 +62,7 @@ function App() {
           Sign Up
         </button>
       </div>
+      <footer className="home-footer">ChoreDash, 2025</footer>
     </div>
   ) : (
     <div className="modal">

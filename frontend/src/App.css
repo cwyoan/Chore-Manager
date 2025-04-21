@@ -138,6 +138,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 100vh;
 }
 
 .home-title {
@@ -180,4 +181,17 @@ body {
   margin: 3px;
   padding: 15px;
   background-color: #367bb4;
+}
+
+.home-footer {
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  height: 30px;
+  width: 100%;
+  background-color: #bbb;
+  text-align: center;
+  border-top-color: black;
+  border-top-width: 4px;
+  border-top-style: solid;
 }
