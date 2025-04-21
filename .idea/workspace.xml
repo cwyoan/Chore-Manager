@@ -18,15 +18,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6e659f33-3e15-4a65-9be6-8a694e5cae4a" name="Changes" comment="Made game button on dashboard with time left until next play after exiting">
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_13_2025_12_16_PM_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_13_2025_12_16_PM__Changes_.xml" beforeDir="false" />
+    <list default="true" id="6e659f33-3e15-4a65-9be6-8a694e5cae4a" name="Changes" comment="Fixed bugs with website layout and removed unnecessary elements">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Dashboard.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Dashboard.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignupForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignupForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/FriendsTab.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/FriendsTab.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,7 +116,7 @@
       <workItem from="1744991293694" duration="39000" />
       <workItem from="1744991350190" duration="3783000" />
       <workItem from="1745080376570" duration="8291000" />
-      <workItem from="1745264225700" duration="2113000" />
+      <workItem from="1745264225700" duration="4130000" />
     </task>
     <task id="LOCAL-00001" summary="Organized/fixed game logic to test with frontend (might still be a work in progress)">
       <option name="closed" value="true" />
@@ -164,7 +158,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745116738455</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Fixed bugs with website layout and removed unnecessary elements">
+      <option name="closed" value="true" />
+      <created>1745266414119</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1745266414119</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -188,7 +190,8 @@
     <MESSAGE value="Add backend logic file to main branch" />
     <MESSAGE value="Added frontend game file to main branch" />
     <MESSAGE value="Made game button on dashboard with time left until next play after exiting" />
-    <option name="LAST_COMMIT_MESSAGE" value="Made game button on dashboard with time left until next play after exiting" />
+    <MESSAGE value="Fixed bugs with website layout and removed unnecessary elements" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed bugs with website layout and removed unnecessary elements" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

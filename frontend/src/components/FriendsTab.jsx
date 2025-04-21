@@ -22,16 +22,15 @@ function FriendsTab({ userId }) {
       const others = users.filter(u => u.UserID !== userId);
       setAllUsers(others);
 
-      // fetch status for each other user
-      const withStatus = await Promise.all(
-        others.map(async u => ({
-          ...u,
-          status: await connector.getFriendStatus(userId, u.UserID)
-        }))
-      );
+      setPendingReqs([]);
 
-      // keep only those statuses starting with "REQ"
-      setPendingReqs(withStatus.filter(u => u.status?.startsWith("REQ")));
+      // fetch status for each other user
+      for (const u of others) {
+        const waitStatus = await connector.getFriendStatus(userId, u.UserID);
+        if (waitStatus?.startsWith("REQ")) {
+          setPendingReqs(prev => [...prev, { ...u, waitStatus }]);
+        }
+      }
     } catch (err) {
       console.error("Error fetching friends data:", err);
     }
