@@ -40,8 +40,6 @@ function SignupForm({ onAuthSuccess, showMessage }) {
         return;
       }
 
-      showMessage("Signup successful! Redirecting to home...");
-
       if ((await connector.getUser(newUserId)) != null) {
         onAuthSuccess(newUserId);
       } else {

@@ -1,7 +1,7 @@
 /* Dashboard.css */
 
 .dashboard-container {
-  max-width: 100vw;
+  min-width: 100vw;
   min-height: 100vh;
   padding: 20px;
   background: #f0f2f5;

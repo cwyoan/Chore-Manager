@@ -112,33 +112,17 @@ body {
   text-align: center;
 }
 
-/* Override button styling */
-.override-button {
-  margin-top: 15px;
-  padding: 8px 16px;
-  background-color: #ff9800;
-  border: none;
-  color: #fff;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-}
-
-.override-button:hover {
-  background-color: #e68900;
-}
-
 .home-container {
-  background-image: linear-gradient(
-    to bottom right,
-    #a9ff81,
-    rgb(152, 255, 238)
-  );
+  background-image: linear-gradient(to bottom right, #a9ff81, rgb(152, 255, 238));
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+
 }
 
 .home-title {
@@ -181,17 +165,4 @@ body {
   margin: 3px;
   padding: 15px;
   background-color: #367bb4;
-}
-
-.home-footer {
-  position: fixed;
-  left: 0px;
-  bottom: 0px;
-  height: 30px;
-  width: 100%;
-  background-color: #bbb;
-  text-align: center;
-  border-top-color: black;
-  border-top-width: 4px;
-  border-top-style: solid;
 }

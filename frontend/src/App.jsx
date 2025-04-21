@@ -21,13 +21,6 @@ function App() {
     setMessage("");
   };
 
-  // Override function to bypass authentication.
-  const overrideToDashboard = () => {
-    // For example, using 0 as the guest user id.
-    setUserId(0);
-    setMessage("Override enabled. Using guest account.");
-  };
-
   const toForms = (signin) => {
     setHome(false);
     setIsLogin(signin);
@@ -62,12 +55,11 @@ function App() {
           Sign Up
         </button>
       </div>
-      <footer className="home-footer">ChoreDash, 2025</footer>
     </div>
   ) : (
     <div className="modal">
       <div className="card">
-        <h1>Chore App</h1>
+        <h1>Chore Dash</h1>
         <button className="toggle-button" onClick={toggleForm}>
           {isLogin ? "Switch to Signup" : "Switch to Login"}
         </button>
@@ -83,9 +75,6 @@ function App() {
           />
         )}
         {message && <p className="message">{message}</p>}
-        <button className="override-button" onClick={overrideToDashboard}>
-          Override: Go to Dashboard
-        </button>
       </div>
     </div>
   );
