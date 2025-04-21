@@ -20,7 +20,10 @@ function Dashboard({ userId }) {
 
   const handleExitGame = (score) => {
     const nextPlayTime = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 1 week
-    localStorage.setItem(`gameCooldownEndsAt-${userId}`, nextPlayTime.toISOString());
+    localStorage.setItem(
+      `gameCooldownEndsAt-${userId}`,
+      nextPlayTime.toISOString()
+    );
     setTimeEndsAt(nextPlayTime);
 
     const updatedUser = { ...user };
@@ -68,7 +71,6 @@ function Dashboard({ userId }) {
     if (stored && new Date(stored) > new Date()) {
       setTimeEndsAt(new Date(stored));
     }
-
   }, [userId]);
 
   useEffect(() => {
@@ -119,11 +121,20 @@ function Dashboard({ userId }) {
           </div>
           <div className="header-right">
             {timeLeft ? (
-                <div className="cooldown-timer">
-                  <p style={{ fontWeight: "bold", color: "#999" }}> Play again in: {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s</p>
-                </div>
+              <div className="cooldown-timer">
+                <p style={{ fontWeight: "bold", color: "#999" }}>
+                  {" "}
+                  Play again in: {timeLeft.days}d {timeLeft.hours}h{" "}
+                  {timeLeft.minutes}m {timeLeft.seconds}s
+                </p>
+              </div>
             ) : (
-                <button onClick={() => setShowGame(true)} className="play-game-button">Play Game</button>
+              <button
+                onClick={() => setShowGame(true)}
+                className="play-game-button"
+              >
+                Play Game
+              </button>
             )}
           </div>
         </div>
@@ -153,11 +164,11 @@ function Dashboard({ userId }) {
         {activeTab === "friends" && <FriendsTab userId={userId} />}
       </div>
       {showGame && (
-          <div className="chore-overlay">
-            <div className="overlay-content">
-              <GamePlay onExit={(score) => handleExitGame(score)}/>
-            </div>
+        <div className="chore-overlay">
+          <div className="overlay-content">
+            <GamePlay onExit={(score) => handleExitGame(score)} />
           </div>
+        </div>
       )}
     </div>
   );

@@ -1,8 +1,9 @@
 /* Reset margins and ensure full height */
-html, body {
+html,
+body {
   margin: 0;
   height: 100%;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Modal overlay covers the entire viewport */
@@ -126,4 +127,57 @@ html, body {
 
 .override-button:hover {
   background-color: #e68900;
+}
+
+.home-container {
+  background-image: linear-gradient(
+    to bottom right,
+    #a9ff81,
+    rgb(152, 255, 238)
+  );
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.home-title {
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+}
+
+.slogan {
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+}
+
+.home-button-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.sign-in {
+  margin: 3px;
+  padding: 15px;
+  background-color: #2196f3;
+}
+
+.sign-up {
+  margin: 3px;
+  padding: 15px;
+  background-color: #4197dd;
+}
+
+.sign-in:hover {
+  margin: 3px;
+  padding: 15px;
+  background-color: #1f7dca;
+}
+
+.sign-up:hover {
+  margin: 3px;
+  padding: 15px;
+  background-color: #367bb4;
 }
