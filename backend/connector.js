@@ -65,15 +65,12 @@ class Connector {
   async deleteChore(id) {
     return (
       await axios.delete(
-        "http://localhost:8080/api/chores",
-        {},
-        {
+        "http://localhost:8080/api/chores", {
           headers: {
             server: true,
           },
           params: { id: id },
-        }
-      )
+        })
     ).data;
   }
 

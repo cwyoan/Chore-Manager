@@ -8,6 +8,7 @@
     <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
     <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="8" type="long" />
+    <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexRemoved" />
   </component>
   <component name="CMakeProjectFlavorService">
     <option name="flavorId" value="CMakePlainProjectFlavor" />
@@ -18,9 +19,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6e659f33-3e15-4a65-9be6-8a694e5cae4a" name="Changes" comment="Fixed bugs with website layout and removed unnecessary elements">
+    <list default="true" id="6e659f33-3e15-4a65-9be6-8a694e5cae4a" name="Changes" comment="Slight fix in friends pending requests delay but not fully fixed">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/FriendsTab.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/FriendsTab.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/connector.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/connector.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/ChoresTab.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ChoresTab.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Dashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Dashboard.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,7 +119,9 @@
       <workItem from="1744991293694" duration="39000" />
       <workItem from="1744991350190" duration="3783000" />
       <workItem from="1745080376570" duration="8291000" />
-      <workItem from="1745264225700" duration="4130000" />
+      <workItem from="1745264225700" duration="4174000" />
+      <workItem from="1745291232689" duration="932000" />
+      <workItem from="1745336245607" duration="2534000" />
     </task>
     <task id="LOCAL-00001" summary="Organized/fixed game logic to test with frontend (might still be a work in progress)">
       <option name="closed" value="true" />
@@ -166,7 +171,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745266414119</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Slight fix in friends pending requests delay but not fully fixed">
+      <option name="closed" value="true" />
+      <created>1745269817979</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1745269817980</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -191,7 +204,8 @@
     <MESSAGE value="Added frontend game file to main branch" />
     <MESSAGE value="Made game button on dashboard with time left until next play after exiting" />
     <MESSAGE value="Fixed bugs with website layout and removed unnecessary elements" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed bugs with website layout and removed unnecessary elements" />
+    <MESSAGE value="Slight fix in friends pending requests delay but not fully fixed" />
+    <option name="LAST_COMMIT_MESSAGE" value="Slight fix in friends pending requests delay but not fully fixed" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -5,7 +5,7 @@ import ProgressBar from "./ProgressBar";
 
 const connector = new Connector();
 
-function ChoresTab({ user, chores, refreshData, updateUser }) {
+function ChoresTab({ user, chores, refreshData, updateUser, setShowGame }) {
   const [addingChore, setAddingChore] = useState(false);
   const [removingChores, setRemovingChores] = useState(false);
   const [selectedChores, setSelectedChores] = useState([]);
@@ -90,20 +90,24 @@ function ChoresTab({ user, chores, refreshData, updateUser }) {
       alert(`Please wait until time is up!`);
       return;
     }
+    setShowGame(true);
+
     const updatedUser = {
       ...user,
       Score: (user.Score || 0) + (currentChore.Difficulty || 0),
     };
 
-    updateUser(updatedUser);
     cancelChore();
+
     try {
       const result = await connector.setUser(updatedUser);
       if (result?.message !== "Success") {
         alert("Failed to update user score.");
       }
 
+      updateUser(updatedUser);
       await refreshData();
+
     } catch (err) {
       console.error("Error finishing chore:", err);
       alert("Something went wrong while finishing the chore.");

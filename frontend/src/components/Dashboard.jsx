@@ -15,28 +15,11 @@ function Dashboard({ userId }) {
   const [activeTab, setActiveTab] = useState("chores");
   const [showGame, setShowGame] = useState(false);
 
-  const [timeEndsAt, setTimeEndsAt] = useState(null);
-  const [timeLeft, setTimeLeft] = useState(null);
-
   const handleExitGame = (score) => {
-    const nextPlayTime = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 1 week
-    localStorage.setItem(
-      `gameCooldownEndsAt-${userId}`,
-      nextPlayTime.toISOString()
-    );
-    setTimeEndsAt(nextPlayTime);
-
     const updatedUser = { ...user };
     updatedUser.Score = (updatedUser.Score || 0) + (score || 0);
     connector.setUser(updatedUser);
     setUser(updatedUser);
-
-    const totalSec = Math.floor(nextPlayTime - new Date() / 1000);
-    const days = Math.floor(totalSec / (24 * 3600));
-    const hours = Math.floor((totalSec % (24 * 3600)) / 3600);
-    const minutes = Math.floor((totalSec % 3600) / 60);
-    const seconds = totalSec % 60;
-    setTimeLeft({ days, hours, minutes, seconds });
 
     setShowGame(false);
   };
@@ -67,49 +50,7 @@ function Dashboard({ userId }) {
       fetchDashboardData();
     }
 
-    const stored = localStorage.getItem(`gameCooldownEndsAt-${userId}`);
-    if (stored && new Date(stored) > new Date()) {
-      setTimeEndsAt(new Date(stored));
-    }
   }, [userId]);
-
-  useEffect(() => {
-    const stored = localStorage.getItem(`gameCooldownEndsAt-${userId}`);
-    if (stored) {
-      const date = new Date(stored);
-      if (date > new Date()) {
-        setTimeEndsAt(date);
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!timeEndsAt) return;
-
-    const updateCountdown = () => {
-      const now = new Date();
-      const diff = timeEndsAt - now;
-
-      if (diff <= 0) {
-        setTimeEndsAt(null);
-        setTimeLeft(null);
-        return;
-      }
-
-      const totalSec = Math.floor(diff / 1000);
-      const days = Math.floor(totalSec / (24 * 3600));
-      const hours = Math.floor((totalSec % (24 * 3600)) / 3600);
-      const minutes = Math.floor((totalSec % 3600) / 60);
-      const seconds = totalSec % 60;
-
-      setTimeLeft({ days, hours, minutes, seconds });
-    };
-
-    updateCountdown();
-
-    const interval = setInterval(updateCountdown, 1000);
-    return () => clearInterval(interval);
-  }, [timeEndsAt]);
 
   return (
     <div className="dashboard-container">
@@ -118,24 +59,6 @@ function Dashboard({ userId }) {
           <div className="header-center">
             <h1>Welcome, {user?.FirstName || "User"}!</h1>
             <p className="user-points">Points: {user?.Score || 0}</p>
-          </div>
-          <div className="header-right">
-            {timeLeft ? (
-              <div className="cooldown-timer">
-                <p style={{ fontWeight: "bold", color: "#999" }}>
-                  {" "}
-                  Play again in: {timeLeft.days}d {timeLeft.hours}h{" "}
-                  {timeLeft.minutes}m {timeLeft.seconds}s
-                </p>
-              </div>
-            ) : (
-              <button
-                onClick={() => setShowGame(true)}
-                className="play-game-button"
-              >
-                Play Game
-              </button>
-            )}
           </div>
         </div>
       </header>
@@ -156,6 +79,7 @@ function Dashboard({ userId }) {
               connector.setUser(updated);
               setUser(updated);
             }}
+            setShowGame={setShowGame}
           />
         )}
         {activeTab === "leaderboard" && (
